@@ -8,6 +8,14 @@ declare global {
   }
 }
 
+type KakaoMapProps = {
+  center: {
+    lat: number;
+    lng: number;
+  };
+  // ... 기타 필요한 타입들
+};
+
 export default function KakaoMapInitializer() {
   useEffect(() => {
     const initializeKakaoMaps = () => {

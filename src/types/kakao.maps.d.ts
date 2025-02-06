@@ -20,6 +20,9 @@ declare namespace kakao.maps.services {
   export type Status = "OK" | "ZERO_RESULT" | "ERROR";
 
   export class Places {
+    keywordSearch(keyword: string, arg1: (data: any, status: any) => void, arg2: { location: LatLng; radius: number; sort: SortBy; }) {
+      throw new Error("Method not implemented.");
+    }
     getDetails(
       options: { placeId: string },
       callback: (result: PlacesDetailResult[], status: Status) => void

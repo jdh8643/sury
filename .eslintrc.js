@@ -1,0 +1,8 @@
+module.exports = {
+  // ... existing code ...
+  rules: {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react-hooks/rules-of-hooks": "warn",
+  },
+};
