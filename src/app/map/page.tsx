@@ -33,8 +33,6 @@ export default function RepairShopMap() {
   const [selectedShop, setSelectedShop] = useState<RepairShop | null>(null);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [map, setMap] = useState<kakao.maps.Map | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   // 카테고리 버튼 목록 추가
   const categories = [
@@ -61,7 +59,6 @@ export default function RepairShopMap() {
         },
         (error) => {
           console.error("Error getting current location:", error);
-          setError("위치 정보를 가져오는데 실패했습니다.");
         }
       );
     }
@@ -71,9 +68,6 @@ export default function RepairShopMap() {
   const searchNearbyShops = useCallback(
     async (location: Location, keyword: string) => {
       if (!map) return;
-
-      setIsLoading(true);
-      setError(null);
 
       try {
         const ps = new kakao.maps.services.Places();
@@ -133,10 +127,7 @@ export default function RepairShopMap() {
           map.setBounds(bounds);
         }
       } catch (error) {
-        console.error('Error searching shops:', error);
-        setError('Failed to search for shops.');
-      } finally {
-        setIsLoading(false);
+        console.error("Error searching shops:", error);
       }
     },
     [map]
@@ -164,10 +155,7 @@ export default function RepairShopMap() {
         <div className="max-w-5xl mx-auto">
           {/* 상단 네비게이션 */}
           <div className="flex items-center justify-between mb-4">
-            <Link
-              href="/"
-              className="flex items-center space-x-2"
-            >
+            <Link href="/" className="flex items-center space-x-2">
               <div className="w-10 h-10 relative">
                 <svg
                   viewBox="0 0 48 48"
@@ -177,15 +165,21 @@ export default function RepairShopMap() {
                 >
                   {/* 배경 그라데이션 */}
                   <defs>
-                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: '#FCD34D' }} />
-                      <stop offset="100%" style={{ stopColor: '#FBBF24' }} />
+                    <linearGradient
+                      id="logoGradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="100%"
+                    >
+                      <stop offset="0%" style={{ stopColor: "#FCD34D" }} />
+                      <stop offset="100%" style={{ stopColor: "#FBBF24" }} />
                     </linearGradient>
                   </defs>
-                  
+
                   {/* 메인 원형 */}
                   <circle cx="24" cy="24" r="24" fill="url(#logoGradient)" />
-                  
+
                   {/* 도구 아이콘 - 현대적인 버전 */}
                   <g transform="translate(12, 12)">
                     {/* 렌치 본체 */}
@@ -207,10 +201,22 @@ export default function RepairShopMap() {
               </div>
               <div className="flex flex-col">
                 <div className="flex items-baseline">
-                  <span className="text-base font-semibold bg-gradient-to-r from-gray-600 to-gray-500 bg-clip-text text-transparent" style={{ fontFamily: 'Pretendard, sans-serif' }}>수리수리</span>
-                  <span className="text-lg font-bold ml-1 bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent" style={{ fontFamily: 'Pretendard, sans-serif' }}>다수리</span>
+                  <span
+                    className="text-base font-semibold bg-gradient-to-r from-gray-600 to-gray-500 bg-clip-text text-transparent"
+                    style={{ fontFamily: "Pretendard, sans-serif" }}
+                  >
+                    수리수리
+                  </span>
+                  <span
+                    className="text-lg font-bold ml-1 bg-gradient-to-r from-yellow-400 to-yellow-500 bg-clip-text text-transparent"
+                    style={{ fontFamily: "Pretendard, sans-serif" }}
+                  >
+                    다수리
+                  </span>
                 </div>
-                <span className="text-xs text-gray-500">우리 동네 수리 플랫폼</span>
+                <span className="text-xs text-gray-500">
+                  우리 동네 수리 플랫폼
+                </span>
               </div>
             </Link>
           </div>
@@ -308,7 +314,7 @@ export default function RepairShopMap() {
 
       {/* 선택된 업체 정보 */}
       {selectedShop && (
-        <div 
+        <div
           className="p-4 bg-white shadow cursor-pointer hover:shadow-md transition-shadow"
           onClick={() => {
             router.push(
