@@ -78,7 +78,7 @@ export default function RepairShopMap() {
       try {
         const ps = new kakao.maps.services.Places();
 
-        const searchShops = () => {
+        const searchShops = async () => {
           return new Promise<kakao.maps.services.PlacesSearchResult>(
             (resolve, reject) => {
               ps.keywordSearch(
@@ -86,6 +86,10 @@ export default function RepairShopMap() {
                 (data, status) => {
                   if (status === kakao.maps.services.Status.OK) {
                     resolve(data);
+                  } else if (
+                    status === kakao.maps.services.Status.ZERO_RESULT
+                  ) {
+                    resolve([]);
                   } else {
                     reject(new Error("검색 결과가 없습니다."));
                   }
@@ -128,12 +132,9 @@ export default function RepairShopMap() {
           });
           map.setBounds(bounds);
         }
-      } catch (err) {
-        console.error("Search error:", err);
-        setError(
-          err instanceof Error ? err.message : "검색 중 오류가 발생했습니다."
-        );
-        setShops([]);
+      } catch (error) {
+        console.error('Error searching shops:', error);
+        setError('Failed to search for shops.');
       } finally {
         setIsLoading(false);
       }
@@ -279,7 +280,7 @@ export default function RepairShopMap() {
         {/* 내 위치로 이동 버튼 */}
         <button
           onClick={moveMyLocation}
-          className="absolute bottom-8 right-4 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 z-10"
+          className="absolute bottom-24 right-4 bg-white rounded-full p-3 shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-400 z-10"
           title="내 위치로 이동"
         >
           <svg
