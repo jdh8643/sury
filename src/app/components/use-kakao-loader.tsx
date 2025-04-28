@@ -4,9 +4,9 @@ interface KakaoLoaderProps {
   libraries?: ("clusterer" | "drawing" | "services")[];
 }
 
-export default function useKakaoLoader({
+const useKakaoLoader = ({
   libraries = ["clusterer", "drawing", "services"],
-}: KakaoLoaderProps = {}) {
+}: KakaoLoaderProps = {}): void => {
   const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
 
   if (typeof window === "undefined") {
@@ -23,10 +23,11 @@ export default function useKakaoLoader({
     useKakaoLoaderOrigin({
       appkey: apiKey,
       libraries,
-      
     });
   } catch (error) {
     console.error("Failed to load Kakao Maps:", error);
     throw new Error("Failed to initialize Kakao Maps");
   }
-}
+};
+
+export default useKakaoLoader;
